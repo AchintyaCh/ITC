@@ -5,7 +5,7 @@
 using namespace std;
 int main() {
     // Write C++ code here
-    float src[2] = {0.4,0.6};
+    float src[2] = {0.7,0.3};
     float prob[2][2];
     float Pxy[4];
     float priorEntropy[2];
@@ -42,9 +42,7 @@ int main() {
     }
     
     for(i=0;i<4;i++){
-        if(i%2==0){
-            Hxy = Pxy[i] * log2(1/Pxy[i]);
-        }
+            Hxy = Hxy + Pxy[i] * log2(1/Pxy[i]);
     }
     cout<<"\nPosterior Entropy: "<<Hxy;
     
