@@ -5,13 +5,15 @@
 using namespace std;
 int main() {
     // Write C++ code here
-    float src[2] = {0.7,0.3};
-    float prob[2][2];
-    float Pxy[4];
-    float priorEntropy[2];
-    float Hxy = 0.0;
-    int i,j,n = 0;
-    double P_y[2];
+    float src[2] = {0.7, 0.3}; // Prior probabilities P(X=0) and P(X=1)
+    float prob[2][2];  // Conditional probabilities P(Y|X)
+    float Pxy[4]; // Posterior probabilities P(X|Y)
+    float priorEntropy[2]; // Prior entropy H(X)
+    float Hxy = 0.0; // Posterior entropy H(X|Y)
+    float Hx = 0.0;  // Prior entropy H(X)
+    float H_channel = 0.0; // Entropy of the channel H(X|Y)
+    int i, j, n = 0;
+    double P_y[2]; // Marginal probability P(Y=j)
     for(i=0;i<2;i++){
         for(j=0;j<2;j++){
             cout<<"Enter Probability for:"<<i<<"and for:"<<j<<endl;
@@ -40,12 +42,22 @@ int main() {
             }
         }
     }
-    
+
+    // Posterior Entropy
     for(i=0;i<4;i++){
             Hxy = Hxy + Pxy[i] * log2(1/Pxy[i]);
     }
     cout<<"\nPosterior Entropy: "<<Hxy;
     
+    for(j = 0; j < 2; j++) {
+        for(i = 0; i < 2; i++) {
+            if (Pxy[n] > 0) { // To prevent log(0)
+                H_channel += P_y[j] * (Pxy[n] * log2(1 / Pxy[n]));
+            }
+            n++;
+        }
+    }
 
+    cout << "\nEntropy of the Channel H(X|Y): " << H_channel;
     return 0;
 }
